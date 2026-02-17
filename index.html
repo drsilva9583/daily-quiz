@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Quiz App</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header>
+        <h1>Daily Quiz App</h1>
+        <h2 id="category">Today's Category:</h2>
+        <div id="score" class="hidden">Score:</div>
+        <progress class="hidden" id="progress" value="0" max="100"></progress>
+    </header>
+    <main>
+        <section id="question-container">
+            <div id="question" class="hidden"></div>
+            <div id="choices" class="choices-container"></div>
+        </section>
+        <section id="feedback-container">
+            <div id="feedback" class="hidden"></div>
+        </section>
+        <section class="controls-container">
+            <div id="controls">
+                <button id="start-button" onclick="startQuiz()">Start Quiz</button>
+                <button id="stop-button" class="hidden">Quit &#10006;</button>
+                <button id="answer-button" class="hidden">Answer &#10004;</button>
+                <button id="next-button" class="hidden">Next &#10140;</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; Diego Silva's Daily Quiz App — drsilva@scu.edu</p>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>

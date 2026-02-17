@@ -1,0 +1,143 @@
+:root {
+    --primary-color: #3D8D7A;
+    --secondary-color: #FFFACD;
+    --comp-color: #8D3D50;
+    --comp-muted-color: #B34D64;
+    --text-color: #505050;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--secondary-color);
+    margin: 0;
+    padding: 0;
+    padding-bottom: 100px;
+}
+
+header {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 1rem 0;
+    text-align: center;
+
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+.hidden {
+    display: none;
+}
+
+#score {
+    font-size: 1.5em;
+    margin: 20px 0;
+}
+
+#question-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+#question {
+    background: var(--comp-color);
+    color: var(--secondary-color);
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#question.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.choices-container {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.choice-label {
+    display: block;
+    border: 2px solid var(--comp-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.choice-label:hover {
+    background: var(--comp-muted-color);
+    color: var(--secondary-color);
+}
+.choice-label input {
+    display: none;
+}
+.choice-label:has(input:checked) {
+    background: var(--comp-color);
+    color: var(--secondary-color);
+    border-color: var(--comp-color);
+}
+
+#open-answer {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: var(--text-color);
+}
+
+#feedback-container {
+    margin: 20px;
+    text-align: center;
+    font-size: 1.3rem;
+    color: var(--text-color);
+}
+
+
+#controls {
+    margin: 20px 0;
+    text-align: center;
+}
+
+button {
+    background: var(--comp-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #6E2C3D;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
