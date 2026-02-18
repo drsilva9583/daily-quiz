@@ -196,7 +196,7 @@
       "score": 5
     },
     {
-      "question": "A triangle with sides 3, 4, 5 is what type of triangle?",
+      "question": "A triangle with a 90-degree angle is called what type of triangle?",
       "questionType": 1,
       "choices": ["Equilateral", "Isosceles", "Right", "Obtuse", "Acute", "Scalene only"],
       "correctAnswer": "Right",
@@ -333,9 +333,9 @@
       "score": 5
     },
     {
-      "question": "What is the name of the protagonist in 'The Catcher in the Rye'?",
+      "question": "What is the name of the fictional school attended by Harry Potter?",
       "questionType": 2,
-      "correctAnswer": "Holden Caulfield",
+      "correctAnswer": "Hogwarts",
       "score": 10
     }
   ],
@@ -456,9 +456,9 @@
       "score": 5
     },
     {
-      "question": "Who is the creator of the 'Harry Potter' series?",
+      "question": "Which actor played the character of Jack Dawson in the movie 'Titanic'?",
       "questionType": 2,
-      "correctAnswer": "J.K. Rowling",
+      "correctAnswer": "Leonardo DiCaprio",
       "score": 10
     },
     {

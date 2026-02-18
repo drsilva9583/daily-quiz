@@ -43,11 +43,13 @@ let questionList = [];
 let startIndex = -1;
 let currentQuestionIndex = -1;
 
+// determine category based on current day of week
 const dayOfWeek = new Date().getDay(); // 0 (Sunday) to 6 (Saturday)
 function getCategory() {
     return SUBJECT_MAP[dayOfWeek];
 }
 
+// finds the subject key in the data object that matches the given subject name
 function findSubjectKey(data, subjectName) {
     if (!data || !subjectName) return null;
     const keys = Object.keys(data);
@@ -84,6 +86,7 @@ async function loadQuestion(subjectName) {
     }
 }
 
+// renders the question and choices for the given index, with fade-in animation
 function renderQuestionAt(index) {
     if (!questionList || questionList.length === 0) {
         questionElement.textContent = 'No questions available for this category.';
@@ -184,6 +187,7 @@ answerButton.addEventListener('click', async () => {
     if (openInput) openInput.disabled = true;
 });
 
+// checks the user's answer against the correct answer, ignoring case and whitespace
 function checkAnswer(userAnswer, correctAnswer) {
     if (!userAnswer || !correctAnswer) return false;
     return userAnswer.toString().trim().toLowerCase() === correctAnswer.toString().trim().toLowerCase();
@@ -237,7 +241,7 @@ stopButton.addEventListener('click', () => {
     feedbackElement.classList.remove('hidden');
 });
 
-
+// handle start quiz logic
 function startQuiz() {
     scoreContainer.style.display = 'flex';
     scoreElement.classList.remove('hidden');
