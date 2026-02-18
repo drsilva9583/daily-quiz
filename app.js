@@ -1,11 +1,21 @@
 //category element
 const categoryElement = document.getElementById("category");
+const dateElement = document.getElementById("date");
 
 //score and progress elements
+const scoreContainer = document.querySelector(".score-container");
 const scoreElement = document.getElementById("score");
-const progressElement = document.getElementById("progress");
+const progressRingElement = document.getElementById("progress-ring");
+const progressRingBackground = document.getElementById("progress-ring-background");
+
+//progress ring elements
+const circle = document.querySelector('.progress-ring__circle');
+const radius = circle.r.baseVal.value;
+const circumference = 2 * Math.PI * radius;
+
 
 //quiz elements
+const quizContainer = document.getElementById("question-container");
 const questionElement = document.getElementById("question");
 const choicesElement = document.getElementById("choices");
 const feedbackElement = document.getElementById("feedback");
@@ -28,6 +38,7 @@ const SUBJECT_MAP = [
 
 let totalScore = 0;
 let questionCount = 0;
+let correctCount = 0;
 let questionList = [];
 let startIndex = -1;
 let currentQuestionIndex = -1;
@@ -64,13 +75,7 @@ async function loadQuestion(subjectName) {
 
         //render question and choices
         renderQuestionAt(currentQuestionIndex);
-
-
-        //const q = questionList[startIndex];
-
-        // store current question context for answer checking
-        // currentQuestion = { question: q, subjectKey, list: questionList, startIndex: startIndex };
-        // return currentQuestion;
+        await animateIn();
 
     } catch (error) {
         console.error('Failed to load question:', error);
@@ -85,6 +90,14 @@ function renderQuestionAt(index) {
         return;
     }
     const q = questionList[index];
+
+    //animation for question change
+    quizContainer.classList.remove('fade-out');
+    quizContainer.classList.add('fade-in');
+    quizContainer.addEventListener('animationend', () => {
+        quizContainer.classList.remove('fade-in');
+    }, { once: true });
+
     questionElement.textContent = q.question || 'Question text not available.';
     // render choices or input based on questionType
     choicesElement.innerHTML = '';
@@ -106,6 +119,14 @@ function renderQuestionAt(index) {
         input.placeholder = 'Type your answer here...';
         choicesElement.appendChild(input);
     }
+}
+
+//progress ring logic
+function setProgress(percent) {
+  const p = Math.max(0, Math.min(100, percent || 0));
+  const offset = circumference - (p / 100) * circumference;
+  circle.style.strokeDasharray = `${circumference}`;
+  circle.style.strokeDashoffset = offset;
 }
 
 // handle answer submission logic
@@ -143,7 +164,9 @@ answerButton.addEventListener('click', async () => {
         totalScore += question.score;
         questionCount += question.score;
         scoreElement.textContent = `Score: ${totalScore}/${questionCount}`;
-        progressElement.value += 10;
+        correctCount++;
+        const progressPercent = (correctCount / questionList.length) * 100;
+        setProgress(progressPercent);
     } else {
         feedbackElement.textContent = `Incorrect! The correct answer was: ${question.correctAnswer}`;
         feedbackElement.style.color = 'red';
@@ -161,12 +184,21 @@ answerButton.addEventListener('click', async () => {
     if (openInput) openInput.disabled = true;
 });
 
+function checkAnswer(userAnswer, correctAnswer) {
+    if (!userAnswer || !correctAnswer) return false;
+    return userAnswer.toString().trim().toLowerCase() === correctAnswer.toString().trim().toLowerCase();
+}
+
+
 // handle next question logic
-nextButton.addEventListener('click', () => {
+nextButton.addEventListener('click', async () => {
     if (!questionList || questionList.length === 0) {
         alert('No question loaded. Please start the quiz.');
         return;
     }
+
+    await animateOut();
+    
     // move to next question, ensuring we loop back to start if we reach the end
     currentQuestionIndex = (currentQuestionIndex + 1) % questionList.length;
     if (currentQuestionIndex === startIndex) {
@@ -183,6 +215,7 @@ nextButton.addEventListener('click', () => {
         feedbackElement.classList.add('hidden');
         nextButton.classList.add('hidden');
         answerButton.classList.remove('hidden');
+        await animateIn();
     }
 });
 
@@ -190,8 +223,10 @@ nextButton.addEventListener('click', () => {
 stopButton.addEventListener('click', () => {
     questionElement.classList.add('hidden');
     choicesElement.style.display = 'none';
+    scoreContainer.style.display = 'none';
     scoreElement.classList.add('hidden');
-    progressElement.classList.add('hidden');
+    progressRingElement.classList.add('hidden');
+    progressRingBackground.classList.add('hidden');
     nextButton.classList.add('hidden');
     answerButton.classList.add('hidden');
     stopButton.classList.add('hidden');
@@ -202,14 +237,12 @@ stopButton.addEventListener('click', () => {
     feedbackElement.classList.remove('hidden');
 });
 
-function checkAnswer(userAnswer, correctAnswer) {
-    if (!userAnswer || !correctAnswer) return false;
-    return userAnswer.toString().trim().toLowerCase() === correctAnswer.toString().trim().toLowerCase();
-}
 
 function startQuiz() {
-    scoreElement.classList.remove("hidden");
-    progressElement.classList.remove("hidden");
+    scoreContainer.style.display = 'flex';
+    scoreElement.classList.remove('hidden');
+    progressRingElement.classList.remove("hidden");
+    progressRingBackground.classList.remove("hidden");
     questionElement.classList.remove("hidden");
     choicesElement.style.display = "flex";
     startButton.classList.add("hidden");
@@ -218,13 +251,54 @@ function startQuiz() {
     feedbackElement.classList.add("hidden");
     totalScore = 0;
     questionCount = 0;
+    correctCount = 0;
     scoreElement.textContent = `Score: ${totalScore}/${questionCount}`;
-    progressElement.value = 0;
+
+    circle.style.strokeDasharray = circumference;
+    circle.style.strokeDashoffset = circumference;
+    setProgress(0);
 
     //load first question
     loadQuestion();
 }
 
+function animateOut() {
+    return new Promise(resolve => {
+        // if already hidden -> resolve immediately
+        if (quizContainer.classList.contains('hidden')) return resolve();
+        quizContainer.classList.remove('fade-in');
+        quizContainer.classList.add('fade-out');
+        feedbackElement.classList.remove('fade-in');
+        feedbackElement.classList.add('fade-out');
+        const handler = () => {
+            quizContainer.removeEventListener('animationend', handler);
+            quizContainer.classList.remove('fade-out');
+            feedbackElement.classList.remove('fade-out');
+            resolve();
+        };
+        quizContainer.addEventListener('animationend', handler);
+    });
+}
+
+function animateIn() {
+    return new Promise(resolve => {
+        // make visible then play in animation
+        quizContainer.classList.remove('hidden');
+        quizContainer.classList.remove('fade-out');
+        quizContainer.classList.add('fade-in');
+        const handler = () => {
+            quizContainer.removeEventListener('animationend', handler);
+            quizContainer.classList.remove('fade-in');
+            resolve();
+        };
+        quizContainer.addEventListener('animationend', handler);
+    });
+}
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
+    dateElement.textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     categoryElement.textContent = `Today's Category: ${getCategory()}`;
+    quizContainer.classList.add('hidden');
 });

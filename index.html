@@ -8,10 +8,45 @@
 </head>
 <body>
     <header>
-        <h1>Daily Quiz App</h1>
+        <div class="title-logo">
+            <h1>Daily Quiz App</h1>
+            <img src="quiz-icon.png" alt="Quiz Icon" id="quiz-icon">
+        </div>
+        <h2 id="date"></h2>
         <h2 id="category">Today's Category:</h2>
-        <div id="score" class="hidden">Score:</div>
-        <progress class="hidden" id="progress" value="0" max="100"></progress>
+        <div class="score-container">
+            <div id="score" class="hidden">Score:</div>
+            <div class="rings">
+                <svg
+                    id="progress-ring-background"
+                    class="progress-back hidden"
+                    width="120"
+                    height="120">
+                    <circle
+                        class="progress-ring__track"
+                        stroke="var(--accent-color)"
+                        stroke-width="5"
+                        fill="transparent"
+                        r="30"
+                        cx="60"
+                        cy="60"/>
+                </svg>
+                <svg
+                    id="progress-ring"
+                    class="progress-ring hidden"
+                    width="120"
+                    height="120">
+                    <circle
+                        class="progress-ring__circle"
+                        stroke="var(--secondary-color)"
+                        stroke-width="5"
+                        fill="transparent"
+                        r="30"
+                        cx="60"
+                        cy="60"/>
+                </svg>
+            </div>
+        </div>
     </header>
     <main>
         <section id="question-container">

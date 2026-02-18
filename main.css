@@ -26,13 +26,41 @@ header {
 
 }
 
+.title-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.title-logo img {
+    animation: brightness 2s infinite alternate;
+    filter: brightness(125%);
+    width: 50px;
+    height: 50px;
+}
+
+@keyframes brightness {
+    from {
+        filter: brightness(125%);
+    }
+    to {
+        filter: brightness(100%);
+    }
+}
+
 h1 {
     margin: 0;
     font-size: 2.5em;
 }
 
+#date {
+    font-size: 1.2em;
+    margin-top: 5px;
+}
+
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 #score {
@@ -40,11 +68,81 @@ h1 {
     margin: 20px 0;
 }
 
+.score-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    width: auto;
+    height: 120px;
+}
+
+.rings {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.progress-back,
+#progress-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 120px;
+    height: 120px;
+    pointer-events: none;
+}
+
+.progress-ring__track {
+  stroke: var(--comp-muted-color);
+  stroke-width: 5;
+  fill: transparent;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+}
+
+.progress-ring__circle {
+  transition: 0.35s stroke-dashoffset;
+  /* axis compensation */
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+
 #question-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 20px;
+}
+
+.fade-in{
+    animation: fadeInSwipe 1s ease-in-out forwards;
+}
+@keyframes fadeInSwipe {
+    0% {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-out{
+    animation: fadeOutSwipe 1s ease-in-out forwards;
+}
+@keyframes fadeOutSwipe {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
 }
 
 #question {
@@ -56,17 +154,6 @@ h1 {
     border-radius: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-}
-
-#question.fade-in {
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
-}
-
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
 }
 
 .choices-container {
