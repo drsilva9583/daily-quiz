@@ -1,3 +1,4 @@
+/* jshint esversion: 8 */
 //category element
 const categoryElement = document.getElementById("category");
 const dateElement = document.getElementById("date");

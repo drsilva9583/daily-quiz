@@ -183,7 +183,6 @@ h1 {
 .choice-label:has(input:checked) {
     background: var(--comp-color);
     color: var(--secondary-color);
-    border-color: var(--comp-color);
 }
 
 #open-answer {
